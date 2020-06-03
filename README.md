@@ -1,69 +1,177 @@
+# Xwiki.Notes
 
-本模板的使用，请参考[模板说明](template.md)
+组件名称：xwiki
+安装文档：https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Installation/
+配置文档：https://www.xwiki.org/xwiki/bin/view/Documentation/AdminGuide/Configuration/
+支持平台：Debian家族 | RHEL家族 | Windows | macOS | Docker
 
---- 以下为项目的Readme部分 ---
+责任人：helin
 
-# xwiki 自动化安装与部署
+## 概要
 
-本项目是由 [Websoft9](https://www.websoft9.com) 研发的 [xwiki](https://xwiki.io/) 自动化安装程序，开发语言是 Ansible。使用本项目，只需要用户在 Linux 上运行一条命令，即可自动化安装 xwiki，让原本复杂的安装过程变得没有任何技术门槛。  
+XWiki是使用[Java](https://baike.baidu.com/item/Java/85979)编写的[开源](https://baike.baidu.com/item/开源/20720669)[Wiki](https://baike.baidu.com/item/Wiki/97755)引擎，它的开发平台特性允许创建协作式[Web](https://baike.baidu.com/item/Web/150564)应用，同时也提供了构建于平台之上的[打包](https://baike.baidu.com/item/打包/23389687)应用（第二代Wiki)。
 
-本项目是开源项目，采用 LGPL3.0 开源协议。
+## 环境要求
 
-## 配置要求
+* 程序语言： java
+* 应用服务器：自选
+* 数据库:   自选
+* 依赖组件：java
+* 其他：
 
+## 安装说明
 
+下面基于不同的安装平台，分别进行安装说明。
 
-#dd
+### 
 
+```shell
+###on CentOS
 
-安装本项目，确保符合如下的条件：
+yum install java     -y   #安装java
+yum install unzip -y #安装unzip 
+###on Ubuntu         
+apt-get update          
+apt install java        
+apt install unzip -y  #安装unzip 
 
-| 条件       | 详情       | 备注  |
-| ------------ | ------------ | ----- |
-| 操作系统       | CentOS7.x, Ubuntu18.04, Amazon Linux2       |  可选  |
-| 公有云| AWS, Azure, 阿里云, 华为云, 腾讯云 | 可选 |
-| 私有云|  KVM, VMware, VirtualBox, OpenStack | 可选 |
-| 服务器配置 | 最低1核1G，安装时所需的带宽不低于10M |  建议采用按量100M带宽 |
+wget http://nexus.xwiki.org/nexus/content/groups/public/org/xwiki/platform/xwiki-platform-distribution-jetty-hsqldb/12.3/xwiki-platform-distribution-jetty-hsqldb-12.3.zip  /usr/local
+cd /usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3
+./start_xwiki.sh
 
-更多请见 [官方 System requirement](https://www.xwiki.com/download.html)
+ 
 
-## 组件
+---
+- hosts: 172.28.2.89   #zhujiqingdan
+  remote_user: root
+  tasks:
+  - name: fenfawenjian
+    copy:
+     src: '{{ item.src }}'
+     dest: /home/smk/
+     owner: root
+     group: root
+     mode: 0755
+    with_items:
+    - { src: '/home/smk/hel.sh' }
+  - name: doshell
+    command: sleep 3
+  - name: doshell2
+    shell: /bin/bash /home/smk/hel.sh
+ 
 
-包含的核心组件为：可选 xwiki2.8.24/3.0.7/3.2.13/4.0.14/5.0.7/stable 多个版本
-
-更多请见 [参数表](/docs/zh/stack-components.md)
-
-## 本项目安装的是 xwiki 最新版吗？
-
-本项目通过[xwiki 官方仓库源](https://packagecloud.io/xwiki/xwiki-server/install)安装，每次安装均可保证为最新版本。
-
-版本号，请通过[官方下载](https://www.xwiki.com/download.html)页面查看  
-
-我们会定期检查版本准确性，并测试此项目，以保证用户可以顺利安装所需的xwiki版本。  
-
-## 安装指南
-
-以 root 用户登录 Linux，运行下面的**一键自动化安装命令**即可启动自动化部署。若没有 root 用户，请以其他用户登录 Linux 后运行 `sudo su -` 命令提升为 root 权限，然后再运行下面的脚本。
 
 ```
-wget -N https://raw.githubusercontent.com/Websoft9/ansible-linux/master/scripts/install.sh; bash install.sh -r xwiki
+
+
+
+
+
+## 路径
+
+* 程序路径：     /usr/local/
+* 日志路径： **/var/lib/xwiki/data**
+* 配置文件路径：/usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3/webapps/xwiki/WEB-INF/xwiki.cfg
+* 启动路径:       /usr/local/
+* 其他...
+
+## 配置
+
+安装完成后，需要依次完成如下配置
+
+
+
+```shell
+vi /usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3/webapps/xwiki/WEB-INF/xwiki.cfg
+ xwiki.superadminpassword=您的密码  
+systemctl restart xwiki         #修改超级管理员账户  
+
+
 ```
 
-脚本后启动，就开始了自动化安装，必要时需要用户做出交互式选择，然后耐心等待直至安装成功。
+## 账号密码
 
-**安装中的注意事项：**  
+### 数据库密码
 
-1. 操作不慎或网络发生变化，可能会导致SSH连接被中断，安装就会失败，此时请重新安装
-2. 安装缓慢、停滞不前或无故中断，主要是网络不通（或网速太慢）导致的下载问题，此时请重新安装
+如果有数据库
 
-多种原因导致无法顺利安装，请使用我们在公有云上发布的 [xwiki 镜像](https://apps.websoft9.com/xwiki) 的部署方式
+* 数据库安装方式：
+* 账号密码：
+
+### 后台账号
+
+如果有后台账号
+
+* 登录地址  http://服务器IP:8080
+
+* 账号密码: 在web管理界面自行创建
+
+  如果启动了超级管理员账户：账户为 superadmin 密码为您设置的密码
+
+* 密码修改方案：
+
+  vi /usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3/webapps/xwiki/WEB-INF/xwiki.cfg
+   xwiki.superadminpassword=您的密码
 
 
-## 文档
+## 服务
 
-文档链接：https://support.websoft9.com/docs/xwiki/zh
+本项目安装后无服务,需自行编写服务
 
-## FAQ
+服务文件位置：/etc/systemd/system/xwiki.service
 
-- 命令脚本部署与镜像部署有什么区别？请参考：[镜像部署-vs-脚本部署](https://support.websoft9.com/docs/faq/zh/bz-product.html#镜像部署-vs-脚本部署)
-- 本项目支持在 Ansible Tower 上运行吗？支持
+```
+[Unit]
+Description=xwiki
+After=network.target
+
+[Service]
+Type=simple
+
+Environment="XWIKI_HOME=/usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3"
+ExecStart=/usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3/start_xwiki.sh
+ExecStop=/usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3/stop_xwiki.sh
+
+[Install]
+WantedBy=multi-user.target
+                    
+                    
+```
+
+## 环境变量
+
+列出需要增加的环境变量以及增加环境变量的命令：
+
+* 名称 | 路径
+
+## 版本号
+
+通过如下的命令获取主要组件的版本号: 
+
+```
+# Check xwiki version
+cat /usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3/webapps/xwiki/WEB-INF/version.properties
+```
+
+## 常见问题
+
+#### 有没有管理控制台？
+
+*http:// 公网 IP:8080
+
+#### 本项目需要开启哪些端口？
+
+| item         | port |
+| ------------ | ---- |
+| 管理平台端口 | 8080 |
+|              |      |
+|              |      |
+
+#### 有没有CLI工具？
+
+无
+
+## 日志
+
+* 2020-05-20完成安装研究
+
