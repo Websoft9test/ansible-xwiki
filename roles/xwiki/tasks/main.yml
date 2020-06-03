@@ -3,7 +3,7 @@
 
 - name: Add directory /usr/local/xwiki
   file:
-    path: /usr/local
+    path: /usr/local/
     state: directory
     owner: root    
     group: root
@@ -21,6 +21,11 @@
     remote_src: yes
     owner: root
     group: root
+    
+- name: Remove extra dir for re-installation
+  shell: 
+         cd /usr/local/
+         unzip  xwiki-platform-distribution-jetty-hsqldb-12.3.zip
 
 
 
