@@ -1,29 +1,29 @@
 # Start or Stop the Services
 
-These commands you must know when you using the RabbitMQ of Websoft9
+These commands you must know when you using the xwiki of Websoft9
 
-## RabbitMQ
+## xwiki
 
 ```shell
-sudo systemctl start rabbitmq-server
-sudo systemctl stop rabbitmq-server
-sudo systemctl restart rabbitmq-server
-sudo systemctl status rabbitmq-server
+sudo systemctl start xwiki-server
+sudo systemctl stop xwiki-server
+sudo systemctl restart xwiki-server
+sudo systemctl status xwiki-server
 
-# you can use this debug mode if RabbitMQ service can't run
-rabbitmq-server console
+# you can use this debug mode if xwiki service can't run
+xwiki-server console
 ```
 
-## RabbitMQ
+## xwiki
 
 ```shell
-sudo systemctl start rabbitmq-server
-sudo systemctl stop rabbitmq-server
-sudo systemctl restart rabbitmq-server
-sudo systemctl status rabbitmq-server
+sudo systemctl start xwiki-server
+sudo systemctl stop xwiki-server
+sudo systemctl restart xwiki-server
+sudo systemctl status xwiki-server
 
-# you can use this debug mode if RabbitMQ service can't run
-rabbitmq-server console
+# you can use this debug mode if xwiki service can't run
+xwiki-server console
 ```
 
 ### MySQL

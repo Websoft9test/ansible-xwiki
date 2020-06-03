@@ -1,0 +1,3 @@
+- name: check_xwiki_service
+  debug:
+    var: check_xwiki_service.stdout

@@ -1,0 +1,97 @@
+# install xwiki by OS_family
+# instal
+
+# configure xwiki
+
+- name: Create xwiki User
+  user:
+    name: xwiki
+    shell: /usr/sbin/nologin
+    home: /data/wwwroot/xwiki
+    create_home: no
+
+- name: Create xwiki directory
+  file:
+    path: /data/wwwroot/xwiki
+    state: directory
+    owner: xwiki
+    group: xwiki
+    
+- name: Download xwiki
+  get_url:
+    dest: /data/wwwroot/xwiki
+    url: "{{xwiki_download_url}}"
+    owner: xwiki
+    group: xwiki
+
+- name: Set xwiki config
+  template:
+    src: xwiki.conf.jinja2
+    dest: /data/wwwroot/xwiki/xwiki.conf
+    owner: xwiki
+    group: xwiki
+
+- name: Setting xwiki service
+  copy:
+    src: xwiki.service
+    dest: /lib/systemd/system/xwiki.service
+
+- name: Restart xwiki
+  service:
+    name: xwiki.service
+    state: restarted
+    enabled: yes
+
+- name: Create xwiki System User
+  user:
+      name: xwiki 
+      create_home: no 
+      home: /opt/xwiki
+      shell: /usr/sbin/nologin
+
+- name: Download xwiki
+  unarchive:
+      src: "{{xwiki_download_url}}"
+      dest: /opt/ 
+      group: xwiki 
+      remote_src: yes
+      owner: xwiki
+      mode: g+w
+
+- name: Create the storage directory for files.
+  file:
+      path: /opt/xwiki/data
+      state: directory 
+      owner: xwiki 
+      group: xwiki
+      mode: g+w
+      
+- name: Set database connection /opt/xwiki/config/config.json
+  lineinfile:
+    dest: /opt/xwiki/config/config.json
+    regexp: '"DataSource":'
+    line: '    "DataSource": "{{xwiki_db_user}}:{{xwiki_db_password}}@tcp(localhost:3306)/{{xwiki_db_name}}?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s",'
+    backrefs: yes 
+
+# set soft link, -b cover the exist links
+# ln -sb src des
+- name: set soft link
+  shell: |
+    ln -sb /opt/xwiki  /data/wwwroot/xwiki
+    ln -sb /opt/xwiki/config /data/config/xwiki
+
+# Check version,
+# must use sudo sh -c to solve the no-root permission
+- block:
+  - name: Check xwiki Version
+    shell: sudo sh -c "xwikictl status | grep 'xwiki version' 1>> /data/logs/install_version.txt"
+
+  - name: Check Erlang Version
+    shell: sudo sh -c 'echo "Erlang $(yum info erlang | grep Version | sed -n 1p)" 1>> /data/logs/install_version.txt'
+    when: ansible_os_family=="RedHat"
+
+# check service state
+- name: Check xwiki Service
+  shell: systemctl status xwiki | grep Active*
+  register: check_xwiki_service
+  notify: check_xwiki_service

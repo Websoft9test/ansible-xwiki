@@ -1,0 +1,13 @@
+[Unit]
+Description=xwiki
+After=network.target
+
+[Service]
+Type=simple
+
+Environment="XWIKI_HOME=/usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3"
+ExecStart=/usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3/start_xwiki.sh
+ExecStop=/usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3/stop_xwiki.sh
+
+[Install]
+WantedBy=multi-user.target
