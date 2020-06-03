@@ -9,24 +9,7 @@
   vars_files:
     - vars/main.yml
   
-  vars_prompt:
-    - name: 'xwiki_selection'
-      prompt: "Choose the xwiki distribution \n
-      1: xwiki 5 Classic\n
-      2: xwiki Artemis\n"
-      private: no
-      default: 1
-
-  vars:
-    xwiki_select:
-      '1': "classic"
-      '2': "artemis"
-
-    xwiki_distribution: "{{xwiki_select[xwiki_selection]}}"
   
-  pre_tasks:
-    - debug:
-        msg: Will install {{xwiki_distribution}}
 
   roles:
     - {role: role_common, tags: "role_common"}  

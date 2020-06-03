@@ -3,7 +3,7 @@
 
 - name: Add directory /usr/local/xwiki
   file:
-    path: /usr/local/xwiki
+    path: /usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3
     state: directory
     owner: root
     group: root
