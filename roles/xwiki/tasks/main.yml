@@ -3,9 +3,9 @@
 
 - name: Add directory /usr/local/xwiki
   file:
-    path: /usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3
+    path: /usr/local
     state: directory
-    owner: root
+    owner: root    
     group: root
     mode: '0750'
     
@@ -17,13 +17,12 @@
 - name: Download xwiki
   unarchive:
     src: "{ xwiki_download_url}}"
-    dest: /usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3
+    dest: /usr/local
     remote_src: yes
-    owner: xwiki
-    group: xwiki
+    owner: root
+    group: root
 
-- name: Install this role on {{ansible_os_family}}
-  include: "{{ansible_os_family}}.yml"
+
 
 # configure xwiki
 
