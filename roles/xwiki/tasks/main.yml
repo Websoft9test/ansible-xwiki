@@ -57,5 +57,5 @@
 # check service state
 - name: Check xwiki Service
   shell: systemctl status xwiki | grep Active*
-  register: check xwiki_service
-  notify: check xwiki_service
+  register: check_xwiki_service
+  notify: check_xwiki_service
