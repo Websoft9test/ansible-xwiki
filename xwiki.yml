@@ -30,7 +30,6 @@
 
   roles:
     - {role: role_common, tags: "role_common"}  
-    - {role: role_cloud, tags: "role_cloud"}  
     - {role: role_jdk, tags: "role_jdk"}  
     - {role: xwiki, tags: "xwiki"}
     - {role: role_preend, tags: "preend"}
