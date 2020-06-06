@@ -42,6 +42,13 @@
     state: restarted
     enabled: yes
 
+
+- name: Set superadmin password
+  lineinfile:
+    path: /usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3/webapps/xwiki/WEB-INF/xwiki.cfg
+    regexp: 'xwiki.superadminpassword=systempassword'
+    line: 'xwiki.superadminpassword=123456'
+
 # set soft link, -b cover the exist links
 # ln -sb src des
 - name: set soft link
@@ -51,7 +58,7 @@
     ln -sb /usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3/webapps/xwiki/WEB-INF/xwiki.cfg  /data/config/xwiki
 # Check version,
 # must use sudo sh -c to solve the no-root permission
-- block:
+- block: 
   - name: Check xwiki Version
     shell:  cat /usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3/webapps/xwiki/WEB-INF/version.properties 1>> /data/logs/install_version.txt
 # check service state
