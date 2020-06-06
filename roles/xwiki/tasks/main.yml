@@ -47,9 +47,14 @@
   lineinfile:
     path: /usr/local/xwiki-platform-distribution-jetty-hsqldb-12.3/webapps/xwiki/WEB-INF/xwiki.cfg
     regexp: 'xwiki.superadminpassword=systempassword'
-    line: 'xwiki.superadminpassword=123456'
+    line: 'xwiki.superadminpassword={{xwiki_password}}'
 
-# set soft link, -b cover the exist links
+- name: restart xwiki.service
+  shell: 
+         systemctl restart xwiki
+         
+
+# set soft link,  cover the exist links
 # ln -sb src des
 - name: set soft link
   shell: |
